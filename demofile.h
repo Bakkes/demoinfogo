@@ -1,11 +1,29 @@
-//====== Copyright © 1996-2004, Valve Corporation, All rights reserved. =======
+//====== Copyright (c) 2014, Valve Corporation, All rights reserved. ========//
 //
-// Purpose: 
+// Redistribution and use in source and binary forms, with or without 
+// modification, are permitted provided that the following conditions are met:
 //
-//=============================================================================
+// Redistributions of source code must retain the above copyright notice, this
+// list of conditions and the following disclaimer.
+// Redistributions in binary form must reproduce the above copyright notice, 
+// this list of conditions and the following disclaimer in the documentation 
+// and/or other materials provided with the distribution.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+// THE POSSIBILITY OF SUCH DAMAGE.
+//===========================================================================//
 
-#ifndef TOOLDEMOFILE_H
-#define TOOLDEMOFILE_H
+#ifndef DEMOFILE_H
+#define DEMOFILE_H
 #ifdef _WIN32
 #pragma once
 #endif
@@ -22,6 +40,9 @@
 
 typedef __int32			 	int32;
 typedef unsigned __int32	uint32;
+typedef __int64				int64;
+typedef unsigned __int64	uint64;
+typedef unsigned long		CRC32_t;
 
 // Demo messages
 enum
@@ -51,7 +72,7 @@ enum
 
 struct demoheader_t
 {
-	char	demofilestamp[8];				// Should be HL2DEMO
+	char	demofilestamp[ 8 ];				// Should be HL2DEMO
 	int32	demoprotocol;					// Should be DEMO_PROTOCOL
 	int32	networkprotocol;				// Should be PROTOCOL_VERSION
 	char	servername[ MAX_OSPATH ];		// Name of server
@@ -65,37 +86,50 @@ struct demoheader_t
 };
 
 #define FDEMO_NORMAL		0
-#define FDEMO_USE_ORIGIN2	(1<<0)
-#define FDEMO_USE_ANGLES2	(1<<1)
-#define FDEMO_NOINTERP		(1<<2)	// don't interpolate between this an last view
+#define FDEMO_USE_ORIGIN2	( 1 << 0 )
+#define FDEMO_USE_ANGLES2	( 1 << 1 )
+#define FDEMO_NOINTERP		( 1 << 2 )	// don't interpolate between this an last view
 
 #define MAX_SPLITSCREEN_CLIENTS	2
 
 struct QAngle
 {
 	float x, y, z;
-	void Init()
+	void Init( void )
 	{
 		x = y = z = 0.0f;
+	}
+	void Init( float _x, float _y, float _z )
+	{
+		x = _x;
+		y = _y;
+		z = _z;
 	}
 };
 struct Vector
 {
 	float x, y, z;
-	void Init()
+	void Init( void )
 	{
 		x = y = z = 0.0f;
+	}
+	void Init( float _x, float _y, float _z )
+	{
+		x = _x;
+		y = _y;
+		z = _z;
 	}
 };
 
 struct democmdinfo_t
 {
-	// Default constructor
-	democmdinfo_t() {}
+	democmdinfo_t( void )
+	{
+	}
 
 	struct Split_t
 	{
-		Split_t()
+		Split_t( void )
 		{
 			flags = FDEMO_NORMAL;
 			viewOrigin.Init();
@@ -108,7 +142,7 @@ struct democmdinfo_t
 			localViewAngles2.Init();
 		}
 
-		Split_t&	operator=(const Split_t& src )
+		Split_t&	operator=( const Split_t& src )
 		{
 			if ( this == &src )
 				return *this;
@@ -124,7 +158,7 @@ struct democmdinfo_t
 			return *this;
 		}
 
-		const Vector& GetViewOrigin()
+		const Vector& GetViewOrigin( void )
 		{
 			if ( flags & FDEMO_USE_ORIGIN2 )
 			{
@@ -133,7 +167,7 @@ struct democmdinfo_t
 			return viewOrigin;
 		}
 
-		const QAngle& GetViewAngles()
+		const QAngle& GetViewAngles( void )
 		{
 			if ( flags & FDEMO_USE_ANGLES2 )
 			{
@@ -141,7 +175,7 @@ struct democmdinfo_t
 			}
 			return viewAngles;
 		}
-		const QAngle& GetLocalViewAngles()
+		const QAngle& GetLocalViewAngles( void )
 		{
 			if ( flags & FDEMO_USE_ANGLES2 )
 			{
@@ -212,6 +246,4 @@ public:
 	std::string m_fileBuffer;
 };
 
-uint32 ReadVarInt32( const char* buf, size_t bufLength, size_t& index );
-
-#endif // TOOLDEMOFILE_H
+#endif // DEMOFILE_H

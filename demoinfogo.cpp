@@ -30,7 +30,7 @@ int __cdecl main( int argc, char *argv[] )
 
 	if( argc <= 1 )
 	{
-		printf( "demoinfo2 filename.dem\n" );
+		printf( "demoinfogo filename.dem\n" );
 		exit( 0 );
 	}
 

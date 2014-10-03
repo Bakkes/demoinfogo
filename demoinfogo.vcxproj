@@ -111,14 +111,18 @@ protoc-2.5.0-win32\protoc.exe --proto_path=.\protobuf-2.5.0\src --proto_path=. -
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="demofile.cpp" />
+    <ClCompile Include="demofilebitbuf.cpp" />
     <ClCompile Include="demofiledump.cpp" />
     <ClCompile Include="demoinfogo.cpp" />
+    <ClCompile Include="demofilepropdecode.cpp" />
     <ClCompile Include="generated_proto\cstrike15_usermessages_public.pb.cc" />
     <ClCompile Include="generated_proto\netmessages_public.pb.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="demofile.h" />
+    <ClInclude Include="demofilebitbuf.h" />
     <ClInclude Include="demofiledump.h" />
+    <ClInclude Include="demofilepropdecode.h" />
     <ClInclude Include="generated_proto\cstrike15_usermessages_public.pb.h" />
     <ClInclude Include="generated_proto\netmessages_public.pb.h" />
   </ItemGroup>
